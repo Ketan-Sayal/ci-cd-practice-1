@@ -1,0 +1,19 @@
+FROM oven/bun:1
+
+WORKDIR /usr/src/app
+
+COPY apps/server ./apps/server
+COPY packages ./packages
+COPY bun.lock ./bun.lock
+COPY turbo.json ./turbo.json
+COPY package.json ./package.json
+COPY tsconfig.json ./tsconfig.json
+
+ENV DATABASE_URL=postgresql://postgres:mysecret@localhost:5432/postgres
+
+RUN bun install
+RUN bun run db:generate
+
+EXPOSE 3001
+
+CMD sh -c "bun run db:migrate && bun run server:start"

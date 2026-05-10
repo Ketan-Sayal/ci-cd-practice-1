@@ -1,0 +1,24 @@
+FROM oven/bun:1
+
+WORKDIR /usr/src/app
+
+COPY apps/web ./apps/web
+COPY packages ./packages
+COPY bun.lock ./bun.lock
+COPY turbo.json ./turbo.json
+COPY package.json ./package.json
+COPY tsconfig.json ./tsconfig.json
+
+ENV DATABASE_URL="postgresql://postgres:mysecret@localhost:5432/postgres"
+ENV NEXT_PUBLIC_BACKEND_URL="http://localhost:3001"
+ENV BACKEND_URL="http://server:3001"
+ENV AUTH_SECRET="This is an example"
+ENV AUTH_GITHUB_ID=""
+ENV AUTH_GITHUB_SECRET=""
+
+RUN bun install
+RUN bun run db:generate
+
+EXPOSE 3000
+
+CMD ["bun", "run", "web:start"]

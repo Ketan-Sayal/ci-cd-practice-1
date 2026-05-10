@@ -1,0 +1,17 @@
+node_modules
+.next
+.turbo
+dist
+build
+coverage
+.git
+.env
+Dockerfile*
+docker-compose.yml
+
+apps/web/.next
+apps/web/node_modules
+
+apps/server/node_modules
+
+packages/*/node_modules
