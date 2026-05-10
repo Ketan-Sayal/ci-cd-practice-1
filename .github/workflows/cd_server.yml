@@ -29,7 +29,7 @@ jobs:
             echo "${{secrets.SSH_PRIVATE_KEY}}"> ~/ssh_key
             chmod 700 ~/ssh_key
 
-            ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@${{secrets.SSH_MACHINE_IP}} << 'EOF'
+            ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@54.242.2.128 << 'EOF'
 
             docker pull ketansayal2004/todo-app-server:${{github.sha}}
             docker kill user_server || true
