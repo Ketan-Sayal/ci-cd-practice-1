@@ -34,7 +34,7 @@ jobs:
             docker pull ketansayal2004/todo-app-web:${{github.sha}}
             docker kill user_web || true
             docker rm user_web || true
-            docker run -d --network my_network --name user_web -e DATABASE_URL=postgresql://postgres:mysecret@postgres:5432/postgres -p 3000:3000 ketansayal2004/todo-app-web:${{github.sha}}
+            docker run -d --network my_network --name user_web -e DATABASE_URL="postgresql://postgres:mysecret@postgres:5432/postgres" -e NEXT_PUBLIC_BACKEND_URL=${{secrets.BACKEND_URL}} -e BACKEND_URL="http://user_server:3001" -e AUTH_SECRET="This is an example" -e AUTH_GITHUB_ID=${{secrets.AUTH_GITHUB_ID}} -e AUTH_GITHUB_SECRET=${{secrets.AUTH_GITHUB_SECRET}} -p 3000:3000 ketansayal2004/todo-app-web:${{github.sha}}
             docker ps
             EOF
 

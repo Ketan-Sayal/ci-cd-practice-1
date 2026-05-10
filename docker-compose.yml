@@ -26,8 +26,8 @@ services:
       - NEXT_PUBLIC_BACKEND_URL=http://localhost:3001
       - BACKEND_URL=http://server:3001
       - AUTH_SECRET="This is an example"
-      - AUTH_GITHUB_ID=Ov23li25tCG2eC5GaiUq
-      - AUTH_GITHUB_SECRET=cb902337010c924c786e46ef66b47bd6a401244a
+      - AUTH_GITHUB_ID=your github id
+      - AUTH_GITHUB_SECRET=your github secret
     ports:
       - '3000:3000'
     depends_on:
