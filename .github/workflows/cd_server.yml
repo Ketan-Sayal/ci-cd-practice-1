@@ -35,7 +35,6 @@ jobs:
             docker kill user_server || true
             docker rm user_server || true
             docker run -d --network my_network --name user_server -e DATABASE_URL=postgresql://postgres:mysecret@postgres:5432/postgres -p 3001:3001 ketansayal2004/todo-app-server:${{github.sha}}
-            docker ps
             EOF
 
       
