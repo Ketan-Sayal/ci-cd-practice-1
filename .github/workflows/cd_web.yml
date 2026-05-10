@@ -1,0 +1,45 @@
+name: Web deployment
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout github
+        uses: actions/checkout@v4
+      
+      - name: Log in to GitHub container registry
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: docker build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./docker/Dockerfile.web
+          push: true
+          tags: ketansayal2004/todo-app-web:${{ github.sha }}
+      - name: SSh into machine
+        run: |
+            echo "${{secrets.SSH_PRIVATE_KEY}}"> ~/ssh_key
+            chmod 700 ~/ssh_key
+
+            ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@3.87.137.38 << 'EOF'
+
+            docker pull ketansayal2004/todo-app-web:${{github.sha}}
+            docker kill user_web || true
+            docker rm user_web || true
+            docker run -d --network my_network --name user_web -e DATABASE_URL=postgresql://postgres:mysecret@postgres:5432/postgres -p 3000:3000 ketansayal2004/todo-app-web:${{github.sha}}
+            docker ps
+            EOF
+
+      
+
+    
+    
+    
